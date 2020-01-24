@@ -18,7 +18,9 @@ The basic steps for running commands is as follows:
 """
 
 import os
+import time
 import shlex
+import optparse
 import importlib
 try:
 	import readline
@@ -27,6 +29,16 @@ except:
 		import pyreadline as readline
 	except:
 		pass
+
+parser = optparse.OptionParser()
+parser.add_option("-v", "--verbose", dest="verbose", action="store_true", default=False,
+	help="Print information about command execution")
+(options, optionargs) = parser.parse_args()
+
+def log(*args):
+	if options.verbose:
+		prefix = time.strftime("[%Y.%m.%d_%H.%M.%S]")
+		print(prefix, *args)
 
 class PySH:
 	def __init__(self):
@@ -44,18 +56,21 @@ class PySH:
 
 	def find_command(self, command):
 		"""Given a command name, tries to find a script in the path matching that command"""
+		command_filename = command + ".py"
 		for path in self.path.split(":"):
 			# Look through every directory in the path
 			try:
 				# Find all files in each directory in the path
+				log("searching in '%s' for '%s'" % (path, command_filename))
 				filenames = os.listdir(path)
 			except:
 				continue
 			for filename in filenames:
 				# Determine if any of the filenames in each directory matches
 				# the given command name and ends with ".py"
-				if filename == command + ".py":
+				if filename == command_filename:
 					filepath = os.path.join(path, filename)
+					log("found '%s'" % filepath)
 					return filepath
 
 	def load_command(self, command):
@@ -77,8 +92,10 @@ class PySH:
 			line = input(self.prompt)
 			line = shlex.split(line)
 			if len(line) > 0:
+				start = time.time()
 				name = line[0]
 				args = line[1:]
+				log("executing '%s' with args %s" % (name, args))
 				try:
 					func = self.load_command(name)
 				except Exception as err:
@@ -87,10 +104,16 @@ class PySH:
 					continue
 				if func:
 					# If the command was found in the path, run it
-					for output in func(*args):
-						yield output
+					log("run(%s)" % str(args)[1:-1])
+					try:
+						for output in func(*args):
+							yield output
+					except Exception as err:
+					    yield "pysh: %s: %s" % (name, str(err))
 				else:
 					yield "pysh: %s: command not found" % name
+				duration = time.time() - start
+				log("%s: command completed in %fs" % (name, duration))
 
 if __name__ == '__main__':
 	# Create a new instance of pysh
