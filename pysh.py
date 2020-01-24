@@ -59,7 +59,7 @@ class PySH:
 					return filepath
 
 	def load_command(self, command):
-		"""Given a command name, attempts to load the script file for that command"""
+		"""Given a command name, attempts to load the run method for that command"""
 		filepath = self.find_command(command)
 		if filepath:
 			# Once a module is imported, its contents are loaded into
