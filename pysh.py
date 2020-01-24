@@ -52,7 +52,7 @@ class PySH:
 	@property
 	def prompt(self):
 		"""Returns the prompt to display at the beginning of each line"""
-		return os.environ.get("PYSH_PROMPT") or ">>> "
+		return os.environ.get("PYSH_PROMPT").encode().decode("unicode_escape") or ">>> "
 
 	def find_command(self, command):
 		"""Given a command name, tries to find a script in the path matching that command"""
