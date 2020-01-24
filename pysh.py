@@ -21,7 +21,7 @@ import os
 import time
 import shlex
 import optparse
-import importlib
+import importlib.machinery
 try:
 	import readline
 except:
