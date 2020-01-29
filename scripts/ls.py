@@ -1,3 +1,9 @@
+"""
+Usage: ls [directories]
+This command prints the contents of the current directory
+or the supplied directories.
+"""
+
 import os
 import glob
 

@@ -1,4 +1,5 @@
 """
+Usage: echo string
 This command prints the given arguments
 """
 
