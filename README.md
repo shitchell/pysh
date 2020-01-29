@@ -7,6 +7,8 @@ This utility provides a simple shell that runs python scripts and python code in
 ### How It Works
 PySH accepts lines of user input and parses them as commands. The first word of each line is treated as the command name, and PySH searches $PYSH_PATH for directories containg a .py file matching that command. If a file matching the command is found and contains a *run()* method, PySH will execute that *run()* method passing the remainder of the line as method parameters.
 
+![image](https://i.imgur.com/bljkQyo.png)
+
 ### Installation
 1. Install [python3](https://www.python.org/downloads/)
 2. Clone repository
