@@ -30,11 +30,6 @@ except:
 	except:
 		pass
 
-parser = optparse.OptionParser()
-parser.add_option("-v", "--verbose", dest="verbose", action="store_true", default=False,
-	help="Print information about command execution")
-(options, optionargs) = parser.parse_args()
-
 def log(*args):
 	if options.verbose:
 		prefix = time.strftime("[%Y.%m.%d_%H.%M.%S]")
@@ -118,6 +113,12 @@ class PySH:
 				log("%s: command completed in %fs" % (name, duration))
 
 if __name__ == '__main__':
+	 # Parse the command line options
+	parser = optparse.OptionParser()
+	parser.add_option("-v", "--verbose", dest="verbose", action="store_true", default=False,
+		help="Print information about command execution")
+	(options, optionargs) = parser.parse_args()
+
 	# Create a new instance of pysh
 	shell = PySH()
 	# Run forever
