@@ -1,4 +1,4 @@
-import os
+import getpass
 
 def run(*args):
-    yield os.environ.get("USER")
+    yield getpass.getuser()
